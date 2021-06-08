@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="mt-2">Enjoy chat with the following :-</h3>
+{% for item in data %}
+{% if request.user.username != item.username %}
+<a class="btn btn-block btn-success w-50 m-1" href="/chat/{{ item.username }}">{{ item.username }}</a><br>
+{% endif %}
+{% endfor %}
+{% endblock %}

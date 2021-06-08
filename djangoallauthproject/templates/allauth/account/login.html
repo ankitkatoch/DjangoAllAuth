@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block content %}
+<section id="action_div" class="container rounded shadow-lg p-3 my-5 rounded" style="max-width:25rem;">
+		<div class="row h-100" style="max-width:25rem;">
+			<div class="col-md-12 mx-auto">
+				<h1 class="text-center">{% trans "Sign In" %}</h1>
+				{% if form.errors %}
+					<p class="px-2 text-danger">Your username and/or password didn't match. Please try again.</p>
+				  {% endif %}
+				<form class="p-4 login" method="POST" action="{% url 'account_login' %}">
+                  {% csrf_token %}
+			  <div class="mb-3">
+			    <label for="exampleInputEmail1" class="form-label">Email / username</label>
+                {{ form.login }}
+			  </div>
+			  <div class="mb-3">
+			    <label for="exampleInputPassword1" class="form-label text-center">Password</label>
+                {{ form.password }}
+			  </div>
+	<p class="text-end" style="font-size:0.9rem;"><a href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a></p>
+			  	<div class="text-center"><button type="submit" class="primaryAction btn btn-success btn-block">{% trans "Sign In" %}</button></div>
+			</form>
+				<div class="login-or text-center">{% trans 'or' %}</div>
+				{% get_providers as socialaccount_providers %}
+				{% if socialaccount_providers %}
+				<div class="socialaccount_ballot">
+				  <ul class="socialaccount_providers text-center bg-dark text-white p-1" style="list-style-type:none;">
+					  <p class="text-white bg-success">{% include "socialaccount/snippets/provider_list.html" with process="login" %}</p>
+				  </ul>
+				</div>
+				{% include "socialaccount/snippets/login_extra.html" %}
+				{% else %}
+				<p class="text-center mt-4 me-3">{% blocktrans %}
+				<a href="{{ signup_url }}">Create an account</a>{% endblocktrans %}</p>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+{% endblock %}
+{% block extra_body %}
+{% endblock %}
